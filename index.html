@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rakesh Brahma</title>
+<meta name="description" content="Rakesh Brahma builds AI agents and RAG systems around real business workflows. Eight years in sales and distribution, now building agents with evidence.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rakesh Brahma">
+<meta property="og:description" content="I build AI agents around real business workflows. Eight years in sales and distribution, now building agents with evidence.">
+<meta name="theme-color" content="#F6F7F8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232F5468'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' font-weight='600' fill='%23F6F7F8' text-anchor='middle'%3ERB%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F7F8;
+    --bg-2:#EEF1F3;
+    --ink:#1C2229;
+    --ink-2:#55606A;
+    --ink-3:#7E8891;
+    --line:#DDE2E6;
+    --line-2:#CBD2D8;
+    --accent:#2F5468;
+    --accent-ink:#F6F7F8;
+    --accent-soft:#E4ECF1;
+    --ok:#3E6B4F;
+    --r:10px;
+    --max:1180px;
+    --sans:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:inherit;text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+  img,video{max-width:100%;display:block}
+  h1,h2,h3,h4{margin:0;font-weight:500;letter-spacing:-0.015em;line-height:1.15}
+  h1{font-size:clamp(2rem,3.5vw,2.9rem);letter-spacing:-0.03em;line-height:1.05}
+  h2{font-size:clamp(1.6rem,2.8vw,2.25rem);letter-spacing:-0.025em}
+  h3{font-size:1.25rem}
+  p{margin:0}
+  .muted{color:var(--ink-2)}
+  .mono{font-family:var(--mono);font-size:.8125rem}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  section{padding:96px 0}
+  @media (max-width:767px){section{padding:64px 0}}
+  .section-head{max-width:62ch;margin-bottom:40px}
+  .section-head p{margin-top:12px;font-size:1.0625rem;color:var(--ink-2)}
+
+  /* nav */
+  .nav{position:sticky;top:0;z-index:20;height:64px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{font-weight:500;letter-spacing:-0.01em}
+  .brand span{color:var(--ink-3);font-weight:400;margin-left:10px}
+  .nav ul{list-style:none;margin:0;padding:0;display:flex;gap:28px;align-items:center}
+  .nav ul a{color:var(--ink-2);font-size:.9375rem;transition:color .2s}
+  .nav ul a:hover{color:var(--ink)}
+  @media (max-width:767px){.nav ul li:not(:last-child){display:none}.brand span{display:none}}
+
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:var(--r);font-size:.9375rem;font-weight:500;border:1px solid transparent;cursor:pointer;white-space:nowrap;transition:transform .15s,background .2s,border-color .2s,color .2s;font-family:inherit}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--accent);color:var(--accent-ink)}
+  .btn-primary:hover{background:#264555}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+  .btn-ghost:hover{border-color:var(--ink-3);background:#fff}
+  .btn-sm{height:34px;padding:0 12px;font-size:.875rem}
+
+  /* hero */
+  .hero{padding:56px 0 72px;border-bottom:1px solid var(--line)}
+  .hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:56px;align-items:center}
+  .hero-copy p{margin-top:20px;font-size:1.125rem;color:var(--ink-2);max-width:46ch}
+  .hero-cta{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+  @media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:40px}.hero{padding:56px 0 64px}}
+
+  /* run replay */
+  .run{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 2px rgba(28,34,41,.04),0 12px 32px -16px rgba(47,84,104,.18);overflow:hidden}
+  .run-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+  .run-tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;min-width:0}.run-tab{white-space:nowrap}
+  .run-tab{background:transparent;border:0;padding:6px 10px;border-radius:7px;font:inherit;font-size:.8125rem;color:var(--ink-2);cursor:pointer;transition:background .2s,color .2s}
+  .run-tab:hover{background:var(--bg-2)}
+  .run-tab[aria-selected="true"]{background:var(--accent-soft);color:var(--accent);font-weight:500}
+  .run-q{padding:12px 16px 4px;font-size:.9375rem;line-height:1.5}
+  .run-q small{display:block;color:var(--ink-3);font-size:.75rem;margin-bottom:4px;font-family:var(--mono)}
+  .run-steps{list-style:none;margin:0;padding:6px 16px 4px;display:grid;gap:0}
+  .run-step{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:10px;align-items:center;padding:4px 0;font-size:.8125rem;opacity:.28;transition:opacity .35s}
+  .run-step.on{opacity:1}
+  .run-step .dot{width:8px;height:8px;border-radius:50%;background:var(--line-2);align-self:center;transition:background .3s}
+  .run-step.on .dot{background:var(--accent)}
+  .run-step.done .dot{background:var(--ok)}
+  .run-step .n{font-family:var(--mono);color:var(--ink)}
+  .run-step .n::after{content:'';display:inline-block;width:10px}.run-step .d{color:var(--ink-2);font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.run-step>span:nth-child(2){display:flex;min-width:0;align-items:baseline}
+  .run-step .t{font-family:var(--mono);color:var(--ink-3);font-size:.75rem}
+  .run-result{margin:6px 16px 14px;padding:10px 14px;border-radius:8px;background:var(--bg);border:1px solid var(--line);font-size:.875rem;opacity:0;transform:translateY(4px);transition:opacity .4s,transform .4s}
+  .run-result.on{opacity:1;transform:none}
+  .run-result b{font-weight:500}
+  .run-result .meta{display:block;margin-top:6px;color:var(--ink-3);font-family:var(--mono);font-size:.75rem}
+  .run-foot{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-top:1px solid var(--line);font-size:.75rem;color:var(--ink-3);font-family:var(--mono)}
+  @media (max-width:520px){.run-head{flex-wrap:wrap}.run-tabs{flex:1 1 100%;order:2}.run-head #replay{order:1;margin-left:auto}.run-step>span:nth-child(2){display:block;white-space:normal}.run-step .d{white-space:normal;display:block}}
+
+  /* work */
+  .featured{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:48px;align-items:center;padding-bottom:64px;border-bottom:1px solid var(--line)}
+  @media (max-width:900px){.featured{grid-template-columns:1fr;gap:28px}}
+  .proj-kicker{font-family:var(--mono);font-size:.75rem;color:var(--ink-3);margin-bottom:12px}
+  .proj h3{font-size:1.5rem;letter-spacing:-0.02em}
+  .proj .sum{margin-top:12px;color:var(--ink-2)}
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:20px 28px;margin-top:28px}
+  .metric b{display:block;font-size:1.5rem;font-weight:500;letter-spacing:-0.02em;line-height:1.1}
+  .metric span{display:block;color:var(--ink-2);font-size:.875rem;margin-top:4px;line-height:1.4}
+  .fits{margin-top:24px;padding-left:14px;border-left:2px solid var(--accent);color:var(--ink-2);font-size:.9375rem}
+  .fits b{color:var(--ink);font-weight:500}
+  .proj-links{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+  .media{aspect-ratio:16/10;border-radius:var(--r);background:var(--bg-2);border:1px solid var(--line);display:flex;align-items:flex-end;justify-content:flex-start;padding:0;position:relative;overflow:hidden}
+  .media::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 30% 30%,#fff 0%,transparent 70%);opacity:.6}
+  .media .slot{position:relative;font-family:var(--mono);font-size:.72rem;color:var(--ink-3)}
+  .media img,.media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.media::before{display:none}
+  .media-cap{font-size:.8125rem;color:var(--ink-3);margin-top:10px}
+
+  .featured + .featured{padding-top:64px}
+  @media (min-width:901px){.featured.flip{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}.featured.flip>div:first-child{order:2}}
+  .guards{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:18px 28px}
+  .guards b{display:block;font-weight:500;font-size:.9375rem}
+  .guards span{display:block;color:var(--ink-2);font-size:.875rem;line-height:1.45;margin-top:3px}
+  @media (max-width:520px){.guards{grid-template-columns:1fr}}
+  .clip-tabs{display:flex;gap:4px;margin-top:12px;flex-wrap:wrap}
+  .clip-tabs button{background:transparent;border:1px solid transparent;padding:5px 10px;border-radius:7px;font:inherit;font-size:.8125rem;color:var(--ink-2);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+  .clip-tabs button:hover{background:var(--bg-2)}
+  .clip-tabs button[aria-selected="true"]{background:var(--accent-soft);color:var(--accent);font-weight:500}
+  #lend-img{transition:opacity .25s ease}
+  @media (prefers-reduced-motion:reduce){#lend-img{transition:none}}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:64px 0;border-bottom:1px solid var(--line)}
+  @media (max-width:900px){.pair{grid-template-columns:1fr;gap:56px}}
+  .pair .proj h3{font-size:1.3125rem;margin-top:20px}
+  .pair .metrics{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+  .pair .metric b{font-size:1.25rem}
+  @media (max-width:520px){.pair .metrics{grid-template-columns:1fr 1fr}}
+
+  .more{padding-top:64px}
+  .more h3{font-size:1.125rem;color:var(--ink-2);font-weight:400;margin-bottom:24px}
+  .more-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+  @media (max-width:800px){.more-grid{grid-template-columns:1fr}}
+  .more-item{padding:22px 0;border-top:1px solid var(--line);display:grid;gap:8px}
+  .more-item h4{font-size:1.0625rem;font-weight:500;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .more-item h4 a{color:var(--ink-3);font-family:var(--mono);font-size:.75rem;font-weight:400;white-space:nowrap;transition:color .2s}
+  .more-item h4 a:hover{color:var(--accent)}
+  .more-item p{color:var(--ink-2);font-size:.9375rem}
+  .more-item .fit{color:var(--ink-3);font-size:.875rem}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .tag{font-family:var(--mono);font-size:.72rem;color:var(--ink-2);background:var(--bg-2);padding:3px 8px;border-radius:6px}
+
+  /* experience */
+  .xp{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .role{display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding:40px 0;border-top:1px solid var(--line)}
+  .role:last-of-type{border-bottom:1px solid var(--line)}
+  @media (max-width:800px){.role{grid-template-columns:1fr;gap:12px}}
+  .role .when{font-family:var(--mono);font-size:.8125rem;color:var(--ink-3);line-height:1.6}
+  .role h3{font-size:1.25rem}
+  .role .org{color:var(--ink-2);margin-top:4px}
+  .role .sum{margin-top:14px;color:var(--ink-2);max-width:66ch}
+  .role ul{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:10px;max-width:70ch}
+  .role li{padding-left:18px;position:relative;color:var(--ink);font-size:.9375rem}
+  .role li::before{content:"";position:absolute;left:0;top:.72em;width:7px;height:1px;background:var(--ink-3)}
+  .carry{margin-top:22px;padding:14px 16px;background:var(--accent-soft);border-radius:var(--r);font-size:.9375rem;color:var(--ink);max-width:70ch}
+  .carry b{font-weight:500;color:var(--accent)}
+
+  /* principles */
+  .principles{display:grid;grid-template-columns:1fr 1fr;gap:40px 56px;counter-reset:p}
+  @media (max-width:800px){.principles{grid-template-columns:1fr;gap:32px}}
+  .principle{counter-increment:p;padding-top:18px;border-top:1px solid var(--line-2)}
+  .principle::before{content:counter(p,decimal-leading-zero);font-family:var(--mono);font-size:.75rem;color:var(--ink-3);display:block;margin-bottom:14px}
+  .principle h3{font-size:1.125rem}
+  .principle p{margin-top:8px;color:var(--ink-2);max-width:48ch}
+
+  /* about */
+  .about{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .about .wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:64px;align-items:start}
+  @media (max-width:900px){.about .wrap{grid-template-columns:1fr;gap:40px}}
+  .about-text p{margin-top:18px;color:var(--ink-2);font-size:1.0625rem;max-width:62ch}
+  .about-text p:first-of-type{color:var(--ink)}
+  .portrait{aspect-ratio:1/1;max-width:240px;border-radius:var(--r);background:var(--bg-2);border:1px solid var(--line);overflow:hidden;position:relative;display:flex;align-items:flex-end;padding:12px}
+  .portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .edu{margin-top:24px;display:grid;gap:12px}
+  .edu>div{display:grid;grid-template-columns:84px 1fr;gap:12px;font-size:.9375rem;align-items:baseline}
+  .edu .y{font-family:var(--mono);font-size:.75rem;color:var(--ink-3)}
+  .edu .y::after{content:""}
+  .edu b{font-weight:500;display:block}
+  .edu span{color:var(--ink-2);font-size:.875rem}
+
+  /* gallery carousel */
+  .car-view{overflow:hidden;outline:none;border-radius:var(--r)}
+  .car-view:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+  .car-track{display:flex;transition:transform .7s cubic-bezier(.16,1,.3,1);will-change:transform}
+  .frame{flex:0 0 100%;min-width:0;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:40px;align-items:center;padding-right:1px}
+  .frame .media{aspect-ratio:16/10;padding:0}
+  .frame .media::before{display:none}
+  .frame .media img,.frame .media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .frame h4{font-size:1.25rem;font-weight:500;letter-spacing:-0.01em}
+  .frame p{color:var(--ink-2);font-size:1rem;margin-top:12px;max-width:40ch}
+  .frame[aria-hidden="true"] .cap{opacity:0;transform:translateY(8px)}
+  .frame .cap{transition:opacity .5s ease .15s,transform .5s cubic-bezier(.16,1,.3,1) .15s}
+  .car-ctl{display:flex;justify-content:space-between;align-items:center;margin-top:20px}
+  .car-count{color:var(--ink-3);font-size:.8125rem}
+  .car-btns{display:flex;gap:8px}
+  .car-btns .btn{width:40px;padding:0;justify-content:center;font-size:1rem}
+  @media (max-width:800px){.frame{grid-template-columns:1fr;gap:16px;align-items:start}.frame p{max-width:none;font-size:.9375rem}}
+  @media (prefers-reduced-motion:reduce){.car-track,.frame .cap{transition:none}}
+
+  /* contact */
+  .contact .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
+  @media (max-width:800px){.contact .wrap{grid-template-columns:1fr}}
+  .contact p{margin-top:12px;color:var(--ink-2);max-width:48ch;font-size:1.0625rem}
+  .channels{display:grid;gap:0;border-top:1px solid var(--line)}
+  .channels a{display:grid;grid-template-columns:110px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);transition:color .2s}
+  .channels a:hover{color:var(--accent)}
+  .channels a span:first-child{font-family:var(--mono);font-size:.75rem;color:var(--ink-3)}
+  .channels a span:nth-child(2){font-size:.9375rem}
+  .channels a span:last-child{color:var(--ink-3);font-size:1rem;transition:transform .2s}
+  .channels a:hover span:last-child{transform:translateX(3px)}
+  @media (max-width:480px){.channels a{grid-template-columns:78px 1fr auto;gap:10px}}
+
+  footer{padding:28px 0 40px;border-top:1px solid var(--line);font-size:.8125rem;color:var(--ink-3)}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+  .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .rv{opacity:1;transform:none;transition:none}
+    .run-step,.run-result,.btn,.channels a span:last-child{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">Rakesh Brahma <span>AI agents for real business workflows</span></a>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a class="btn btn-ghost btn-sm" href="resume.pdf" target="_blank" rel="noopener">Résumé</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <h1>I build AI agents around real business workflows.</h1>
+      <p>Eight years in sales and distribution taught me what users need. Now I build the agents that serve them.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#work">See the work</a>
+        <a class="btn btn-ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+
+    <div class="run" id="run" aria-label="Replay of a real run">
+      <div class="run-head">
+        <div class="run-tabs" role="tablist" aria-label="Choose a run">
+          <button class="run-tab" role="tab" data-run="rag" aria-selected="true">Multimodal RAG</button>
+          <button class="run-tab" role="tab" data-run="customs" aria-selected="false">Customs Copilot</button>
+          <button class="run-tab" role="tab" data-run="fleet" aria-selected="false">Fleet Profitability</button>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="replay">Replay</button>
+      </div>
+      <div class="run-q" id="run-q"></div>
+      <ol class="run-steps" id="run-steps"></ol>
+      <div class="run-result" id="run-result"></div>
+      <div class="run-foot"><span id="run-foot-l"></span><span>recorded 8 Nov 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="wrap">
+    <div class="section-head rv">
+      <h2>Selected work</h2>
+      <p>Eight agents and RAG systems, each built for a real, rule-bound job. Every build ships with evidence: golden-set evals, ablations, and guards that keep the language model away from the arithmetic.</p>
+    </div>
+
+    <!-- Featured: Lending -->
+    <article class="featured proj rv">
+      <div>
+        <div class="proj-kicker">Featured build</div>
+        <h3>Lending Support Agent</h3>
+        <p class="sum">An operations desk for a lender, end to end. It looks up loan applications, answers from 12 policy documents with the source named, works out EMIs and totals in code, and hands anything that needs judgement to a person.</p>
+        <ul class="guards">
+          <li><b>Personal data masked</b><span>ID numbers such as a PAN are masked before the model sees them.</span></li>
+          <li><b>Instructions held</b><span>Attempts to override the agent's instructions are refused, with the reason shown.</span></li>
+          <li><b>Read only</b><span>A request to delete a record is blocked, nothing is changed, and it is reported to a person.</span></li>
+          <li><b>Reviewed before it answers</b><span>A second agent checks each reply against the records and policies.</span></li>
+        </ul>
+        <p class="fits"><b>Where it fits.</b> An operations desk end to end: lookup, policy, calculation, review, and the guardrails a business needs before it trusts an agent.</p>
+        <div class="tags" style="margin-top:20px"><span class="tag">CrewAI</span><span class="tag">Autogen review</span><span class="tag">RAG</span><span class="tag">HTTP + WebSocket</span><span class="tag">Runs with no API keys</span></div>
+        <div class="proj-links">
+          <a class="btn btn-ghost btn-sm" href="https://github.com/brahmalabsai-arch/banking-domain-support-agent-crewai" target="_blank" rel="noopener">Repository</a>
+        </div>
+      </div>
+      <div>
+        <div class="media" id="lend-media" style="aspect-ratio:16/9"><img id="lend-img" src="media/lending-ask.gif" alt="Lending Support Agent answering a loan status and KYC question with the policy source named"></div>
+        <div class="clip-tabs" role="tablist" aria-label="Choose a recording">
+          <button role="tab" aria-selected="true" data-src="media/lending-ask.gif" data-alt="Lending Support Agent answering a loan status and KYC question with the policy source named" data-cap="Ask a question: the application record and the KYC policy in one answer, with its source.">Ask</button>
+          <button role="tab" aria-selected="false" data-src="media/lending-tools.gif" data-alt="Sidebar lookup and EMI calculator, with a flagged application routed to a person" data-cap="Lookups and the calculator: a flagged application goes to a person, and the EMI is worked out in code.">Tools and escalation</button>
+          <button role="tab" aria-selected="false" data-src="media/lending-safety.gif" data-alt="PAN masked, an instruction override refused, and a delete request blocked and reported" data-cap="Guardrails: personal data masked, an override refused, a delete blocked and reported.">Guardrails</button>
+        </div>
+        <p class="media-cap" id="lend-cap">Ask a question: the application record and the KYC policy in one answer, with its source.</p>
+      </div>
+    </article>
+
+    <!-- Featured -->
+    <article class="featured flip proj rv">
+      <div>
+        <h3>Advanced Multimodal RAG</h3>
+        <p class="sum">Question answering over NVIDIA's 175-page FY2026 annual report. Text, tables and charts sit in one index of 689 chunks, every answer carries page-level citations, and the numbers are computed in code, never by the model.</p>
+        <div class="metrics">
+          <div class="metric"><b>0.52 → 0.95</b><span>recall@8 after retrieval fixes, with zero extra model calls</span></div>
+          <div class="metric"><b>35 of 35</b><span>numeric answers exact with Claude Sonnet; about 94% with the open model on Groq that runs the live demo</span></div>
+          <div class="metric"><b>0.99</b><span>RAGAS faithfulness on the 48-question golden set</span></div>
+          <div class="metric"><b>0 of 286</b><span>false cache hits, while catching 56% of paraphrased repeats</span></div>
+        </div>
+        <p class="fits"><b>Where it fits.</b> Teams that live inside long reports and cannot afford a wrong number: finance, strategy, and anyone who answers to a board.</p>
+        <div class="proj-links">
+          <a class="btn btn-ghost btn-sm" href="https://github.com/brahmalabsai-arch/advanced-multimodal-rag" target="_blank" rel="noopener">Repository</a>
+        </div>
+      </div>
+      <div>
+        <div class="media"><img src="media/advanced-multimodal-rag.gif" alt="Advanced Multimodal RAG answering a question over the annual report, then returning the same answer from cache" loading="lazy"></div>
+        <p class="media-cap">A cold run, then the same question from cache. A reranker that lowered recall was left out.</p>
+      </div>
+    </article>
+
+    <!-- Pair -->
+    <div class="pair">
+      <article class="proj rv">
+        <div class="media"><img src="media/fleet-profitability-agent.gif" alt="Fleet Profitability Agent planning refuel stops on a Delhi to Guwahati run" loading="lazy"></div>
+        <h3>Fleet Profitability Agent</h3>
+        <p class="sum">A LangGraph planner for logistics fleets: truck routing with alternatives, district diesel prices, toll plazas, and a refuel optimiser that decides where to fill and how much.</p>
+        <div class="metrics">
+          <div class="metric"><b>3 of 5</b><span>corridors clear ₹1/L in savings</span></div>
+          <div class="metric"><b>39 of 39</b><span>plans held the 40 L reserve floor</span></div>
+          <div class="metric"><b>0</b><span>figures in the plan from the language model</span></div>
+        </div>
+        <p class="fits"><b>Where it fits.</b> Straight from fuel sales: the questions fleet customers asked me at the counter, turned into a tool their planners can use every day.</p>
+        <div class="proj-links">
+          <a class="btn btn-ghost btn-sm" href="https://github.com/brahmalabsai-arch/Fleet_Route_Cost_Optimizer" target="_blank" rel="noopener">Repository</a>
+        </div>
+      </article>
+
+      <article class="proj rv">
+        <div class="media"><img src="media/port-customs-clearance-copilot.gif" alt="Port and Customs Clearance Copilot checking container papers and waiting for the human filing gate" loading="lazy"></div>
+        <p class="media-cap">Agent waits are shortened in the recording.</p>
+        <h3>Port &amp; Customs Clearance Copilot</h3>
+        <p class="sum">Five agents with their own MCP toolboxes check the papers as soon as they exist, before the box docks: invoice, packing list and bill of lading cross-checked, demurrage priced, rulebook cited, and a person on every filing.</p>
+        <div class="metrics">
+          <div class="metric"><b>₹82,212</b><span>demurrage avoided in the four-container demo case</span></div>
+          <div class="metric"><b>619</b><span>automated tests passing</span></div>
+          <div class="metric"><b>2 gates</b><span>a human approves every filing and every rule change</span></div>
+        </div>
+        <p class="fits"><b>Where it fits.</b> Built the way a deployment should go: sit with the desk, map every handoff, and keep a person in charge of the decisions that matter.</p>
+        <div class="proj-links">
+          <a class="btn btn-ghost btn-sm" href="https://github.com/brahmalabsai-arch/Shipping_Demurrage_Compliance_Agent" target="_blank" rel="noopener">Repository</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- More -->
+    <div class="more rv">
+      <h3>More builds</h3>
+      <div class="more-grid">
+        <div class="more-item">
+          <h4>AML Compliance Agent <a href="https://github.com/brahmalabsai-arch/aml-compliance-agent" target="_blank" rel="noopener">repo</a></h4>
+          <p>RAG plus tool calling against OpenSanctions, returning ALLOW, REVIEW or BLOCK with the evidence attached. A portfolio build, not client work.</p>
+          <p class="fit">How a written rulebook becomes a decision with evidence attached.</p>
+          <div class="tags"><span class="tag">LangChain</span><span class="tag">OpenSanctions</span><span class="tag">Tool calling</span></div>
+        </div>
+        <div class="more-item">
+          <h4>PolicyMind <a href="https://policymind-bcmuu45m7qfhnvrjiagunr.streamlit.app/" target="_blank" rel="noopener">live demo</a></h4>
+          <p>A 183-page PSU policy made answerable: BGE and BM25 fused with reciprocal rank fusion, a reranker, and parent-child chunking so the clause comes back with its context.</p>
+          <p class="fit">For field teams and partners who need the answer now and the clause behind it.</p>
+          <div class="tags"><span class="tag">Hybrid retrieval</span><span class="tag">Reranking</span><span class="tag">Streamlit</span></div>
+        </div>
+        <div class="more-item">
+          <h4>Rivaya Returns <a href="https://github.com/brahmalabsai-arch/rivaya_D2C_product_returns_automation" target="_blank" rel="noopener">repo</a></h4>
+          <p>Returns and refunds for a D2C storefront. Clear cases auto-resolve in about 200 ms; the judgement calls go to a person with one-click approve or amend.</p>
+          <p class="fit">Routine work, automated with care.</p>
+          <div class="tags"><span class="tag">n8n</span><span class="tag">FastAPI</span><span class="tag">RAG</span></div>
+        </div>
+        <div class="more-item">
+          <h4>Tender Q&amp;A Bot <a href="https://github.com/brahmalabsai-arch/Transportation-Tender-Stateless-Support-Bot" target="_blank" rel="noopener">repo</a></h4>
+          <p>A transport tender from my own desk at IndianOil, made answerable. It abstains when it should, and is measured on recall, abstention and citation accuracy.</p>
+          <p class="fit">Honest about what it does not know.</p>
+          <div class="tags"><span class="tag">FAISS</span><span class="tag">BM25</span><span class="tag">Evals</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="xp">
+  <div class="wrap">
+    <div class="section-head rv">
+      <h2>Experience</h2>
+      <p>Eight years at the front line of B2C and B2B sales, channel management and distribution. These are the users, workflows and handoffs I now design agents around.</p>
+    </div>
+
+    <article class="role rv">
+      <div class="when">Sep 2018 to present<br>Arunachal Pradesh, Bhutan,<br>North East region</div>
+      <div>
+        <h3>Manager, Retail Sales</h3>
+        <p class="org">IndianOil Corporation Ltd.</p>
+        <p class="sum">A channel-partner management role, hands-on in both B2C retail sales and B2B sales to fleets and institutions. I run sales and marketing across a dealer network, and do the administrative liaison with government offices that keeps outlets opening, running and growing.</p>
+        <ul>
+          <li>Lead 64 channel partners across nine districts, three of them sensitive Indo-China border districts, with an average monthly turnover of ₹135 crore across petrol and diesel.</li>
+          <li>Grew diesel volume from 2% to 10% year on year (about 3,672 KL), winning the highest customer acquisition and volume growth in the FY25-26 Xtrapower fleet program.</li>
+          <li>Closed the region's largest single B2B consignment to an international oil company: 26 KL of Servo lubricants into Bhutan, a first-time market entry, via Ministry liaison.</li>
+          <li>Built an Excel sales-analysis model for throughput and gap analysis; piloted CNG commissioning in Lower Assam with Adani Gas.</li>
+          <li>Recognised at the Annual Field Officers' Conclave (FY22-23) for EV-charger commissioning and flagship-outlet upgrades.</li>
+        </ul>
+        <p class="carry"><b>What carries over.</b> Reading what a customer actually needs, translating it for the people who build or approve things, and staying on the ground until it works.</p>
+      </div>
+    </article>
+
+    <article class="role rv">
+      <div class="when">Mar 2017 to Jan 2018<br>Mumbai</div>
+      <div>
+        <h3>Assistant Manager, Business Development</h3>
+        <p class="org">The Q Experiences</p>
+        <ul>
+          <li>Founding team. Chartered India's first luxury cruise to Antarctica with Ponant; the venture later won a World Travel Award.</li>
+          <li>Built the website and online presence, B2B corporate communications, and a LinkedIn lead-generation campaign.</li>
+        </ul>
+        <p class="carry"><b>What carries over.</b> Starting something from zero, and explaining it well enough that people buy into it before it exists.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section id="principles">
+  <div class="wrap">
+    <div class="section-head rv">
+      <h2>How I build</h2>
+      <p>Four things I hold to on every build.</p>
+    </div>
+    <div class="principles">
+      <div class="principle rv">
+        <h3>Sit with the people first.</h3>
+        <p>Before I design anything, I find out how the work already gets done, and who does it. Most of what an agent needs to know is in that conversation, not in the spec.</p>
+      </div>
+      <div class="principle rv">
+        <h3>Keep the model away from the money.</h3>
+        <p>Figures, prices and totals are computed in code. The language model explains the number; it never invents one.</p>
+      </div>
+      <div class="principle rv">
+        <h3>Measure before I claim.</h3>
+        <p>Every build gets a test set before it gets a headline. If a change makes the numbers worse, it comes out, even when it sounded like a good idea.</p>
+      </div>
+      <div class="principle rv">
+        <h3>Keep a person on the decisions that matter.</h3>
+        <p>Clear cases can flow through on their own. Judgement calls go to someone who can be held to them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about">
+  <div class="wrap">
+    <div class="about-text rv">
+      <h2>About</h2>
+      <p>For eight years I've worked at the front line of sales and distribution for IndianOil in India's Northeast: managing a network of channel partners, selling to retail customers, fleets and institutions, running the marketing on the ground, and doing the administrative liaison that keeps it all moving.</p>
+      <p>That is my edge as an engineer. I understand how selling and distribution really work, what the people on the ground need, and where a process quietly breaks. So I can turn a messy business requirement into a clear brief for an agent, and then build it. I studied computer science before management, and when I build, I keep the model away from the arithmetic, measure before I claim anything, and keep a person in the loop where it matters.</p>
+      <p>Some days that means writing the code. Some days it means sitting with the people who will use it, or helping a team decide where AI is worth it at all. I enjoy all three, whether the work lives in sales, operations, dense paperwork or the routine tasks nobody wants to do twice.</p>
+      <p>I live in Pasighat, Arunachal Pradesh, where India sees its first sunrise, and I work remotely with teams anywhere.</p>
+    </div>
+    <aside class="rv">
+      <div class="portrait"><img src="media/rakesh-portrait.jpg" alt="Rakesh Brahma"></div>
+      <div class="edu">
+        <div><span class="y">2026</span><div><b>Certification, Agentic AI Systems &amp; Design</b></div></div>
+        <div><span class="y">2015 to 2017</span><div><b>MBA, General Management</b><span>Marketing and Operations</span></div></div>
+        <div><span class="y">2011 to 2015</span><div><b>B.Tech, Computer Science Engineering</b></div></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="road">
+  <div class="wrap">
+    <div class="section-head rv">
+      <h2>From the road</h2>
+      <p>Every frame here is somewhere my work has taken me. Being out here keeps me close to how quiet and generous this planet is, and to the kindness of the people along the way. It is where I learned to look at problems with more care and a fresher eye.</p>
+    </div>
+    <div class="car rv" id="car" aria-roledescription="carousel" aria-label="Photographs from work travel">
+    <div class="car-view" tabindex="0"><div class="car-track">
+      <figure class="frame" style="margin:0">
+        <div class="media"><video class="clip" poster="media/v8911_poster.jpg" preload="none" muted loop playsinline aria-label="The road goes further than the map"><source src="media/v8911.mp4" type="video/mp4"></video></div>
+        <div class="cap">
+        <h4>The road goes further than the map</h4>
+        <p>Most of my work happens at the end of roads like this one, where the plan on paper meets the place as it really is. I have learned to arrive early, listen first, and let the mountains set the pace. The clouds sat low that day, and nobody was in a hurry, including me.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><img src="media/p8678.jpg" alt="Wires, cliffs and one long curve" loading="lazy"></div>
+        <div class="cap">
+        <h4>Wires, cliffs and one long curve</h4>
+        <p>Power lines follow the road the way supply follows people: quietly, everywhere. Someone built this curve, kept it open through the rains, and made the next village reachable. I think about that when I build systems now. The best ones are the ones nobody has to notice.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><video class="clip" poster="media/v8918_poster.jpg" preload="none" muted loop playsinline aria-label="A lane through the paddy"><source src="media/v8918.mp4" type="video/mp4"></video></div>
+        <div class="cap">
+        <h4>A lane through the paddy</h4>
+        <p>Single-lane roads teach patience. You slow down, you wave, someone waves back. Between the huts and the fields there is a whole economy running on trust and memory. It taught me to understand how people already do things before I try to improve them.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><video class="clip" poster="media/v6051_poster.jpg" preload="none" muted loop playsinline aria-label="Green, as far as it goes"><source src="media/v6051.mp4" type="video/mp4"></video></div>
+        <div class="cap">
+        <h4>Green, as far as it goes</h4>
+        <p>A field like this is a year of somebody's work, and it makes the hills behind it look easy. A minute at its edge is usually all I need to reset the day. Serenity here is not a mood. It is a rhythm, and the people who live by it carry it kindly.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><img src="media/p6556.jpg" alt="The river that carved the valley" loading="lazy"></div>
+        <div class="cap">
+        <h4>The river that carved the valley</h4>
+        <p>From up here you can see the long argument between water and mountain, and who is winning it. The road scratches along the slope, small and determined. Most problems look smaller from the right height, and most solutions take longer than they look.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><img src="media/p6794.jpg" alt="Ferns, wildflowers and a patient hill" loading="lazy"></div>
+        <div class="cap">
+        <h4>Ferns, wildflowers and a patient hill</h4>
+        <p>Pink flowers in the ferns, the cloud breaking open overhead, and a hill that seemed to be waiting for someone to stop and look. Moments like this are why I am grateful for work that keeps me moving. The planet never asks for attention. It quietly rewards it.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><img src="media/p6841.jpg" alt="Into the clouds" loading="lazy"></div>
+        <div class="cap">
+        <h4>Into the clouds</h4>
+        <p>The road bends, the valley opens, and the clouds come down to meet it. Up here you rarely know what is around the next corner, which is a fair description of most work worth doing. You drive carefully, and trust that the road was built by people who knew where it was going.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><img src="media/p6861.jpg" alt="A rainbow, if you look twice" loading="lazy"></div>
+        <div class="cap">
+        <h4>A rainbow, if you look twice</h4>
+        <p>Look just left of centre: a faint rainbow, almost hidden in the cloud. I nearly missed it. It has become a small habit, in the hills and at the desk: look a second time. The detail that matters is usually there, waiting for someone to care enough to notice it.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><video class="clip" poster="media/v6528_poster.jpg" preload="none" muted loop playsinline aria-label="Wind through the grass"><source src="media/v6528.mp4" type="video/mp4"></video></div>
+        <div class="cap">
+        <h4>Wind through the grass</h4>
+        <p>Some places you photograph. Some you just stand in. The wind moved through the grass in long waves while the clouds slid down the ridge, and for a few minutes nothing needed solving. I come back from places like this thinking more clearly, and a little more gently.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><video class="clip" poster="media/v6729_poster.jpg" preload="none" muted loop playsinline aria-label="Wide water, unhurried"><source src="media/v6729.mp4" type="video/mp4"></video></div>
+        <div class="cap">
+        <h4>Wide water, unhurried</h4>
+        <p>Rivers up here are rarely calm, so a stretch like this feels like a gift: wide, clear and in no rush. It is the pace I try to bring into hard conversations at work. Steady, open, no need to force the current. Things find their level when you give them room.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><video class="clip" poster="media/v5860_poster.jpg" preload="none" muted loop playsinline aria-label="The river does not negotiate"><source src="media/v5860.mp4" type="video/mp4"></video></div>
+        <div class="cap">
+        <h4>The river does not negotiate</h4>
+        <p>Fast, cold and loud. Standing on the rocks, you understand why people here plan around the seasons and respect the river first. It is a lesson in humility I keep relearning: build for conditions as they are, not as you would like them to be.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><img src="media/p8673.jpg" alt="Where the river rests" loading="lazy"></div>
+        <div class="cap">
+        <h4>Where the river rests</h4>
+        <p>A long sandbar on the inside of the bend, the water turning blue-green against the forest. Views like this make the travel feel like a privilege rather than a commute. My work has brought me to places most maps barely name, and I do not take that lightly.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><img src="media/p7913.jpg" alt="Smoke, sun and a sawtooth ridge" loading="lazy"></div>
+        <div class="cap">
+        <h4>Smoke, sun and a sawtooth ridge</h4>
+        <p>Smoke drifting over the town, the river throwing the sun back at the sky, and that jagged ridge holding the horizon. Every rooftop down there is a household going about its day. It is a good thing to remember when your work reaches people you will never meet.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><video class="clip" poster="media/v8375_poster.jpg" preload="none" muted loop playsinline aria-label="Reeds by the riverbank"><source src="media/v8375.mp4" type="video/mp4"></video></div>
+        <div class="cap">
+        <h4>Reeds by the riverbank</h4>
+        <p>Haze over the far hills, dry reeds bending in the wind, and a river wide enough to feel like open water. The drive home after days like this is long and quiet, and it is often where my best ideas show up. Distance has a way of sorting what matters.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><img src="media/p7935.jpg" alt="Gold, after the rains" loading="lazy"></div>
+        <div class="cap">
+        <h4>Gold, after the rains</h4>
+        <p>The same hills that are impossibly green in the monsoon turn gold in the dry months. Nothing here stays the same for long, and nothing seems to mind. From a slope like this, change looks less like disruption and more like a season: something to prepare for, and then enjoy.</p>
+        </div>
+      </figure>
+      <figure class="frame" style="margin:0">
+        <div class="media"><img src="media/p8208.jpg" alt="Last light" loading="lazy"></div>
+        <div class="cap">
+        <h4>Last light</h4>
+        <p>The sun going down behind the hills, reeds catching the light, another long day on the road behind me. I keep moments like this because they keep me honest: the work matters, and so does looking up. Serenity, kindness and a fresh angle on things. That is what the road has given me, and what I try to give back.</p>
+        </div>
+      </figure>
+    </div></div>
+    <div class="car-ctl">
+      <div class="car-count mono"><span id="car-i">1</span> / 16</div>
+      <div class="car-btns">
+        <button class="btn btn-ghost btn-sm" id="car-prev" aria-label="Previous">←</button>
+        <button class="btn btn-ghost btn-sm" id="car-next" aria-label="Next">→</button>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="rv">
+      <h2>Contact</h2>
+      <p>If you are building agents around real workflows, or deciding whether to, I would like to hear about it. I reply to everything.</p>
+    </div>
+    <div class="channels rv">
+      <a href="mailto:brahmalabs.ai@gmail.com"><span>Email</span><span>brahmalabs.ai@gmail.com</span><span>→</span></a>
+      <a href="https://www.linkedin.com/in/rakesh-brahma-532611118/" target="_blank" rel="noopener"><span>LinkedIn</span><span>rakesh-brahma</span><span>→</span></a>
+      <a href="https://github.com/brahmalabsai-arch" target="_blank" rel="noopener"><span>GitHub</span><span>brahmalabsai-arch</span><span>→</span></a>
+      <a href="https://wa.me/917224021351" target="_blank" rel="noopener"><span>WhatsApp</span><span>Message me</span><span>→</span></a>
+      <a href="https://x.com/Rakesh_Brahma_6" target="_blank" rel="noopener"><span>X</span><span>@Rakesh_Brahma_6</span><span>→</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Rakesh Brahma. Pasighat, Arunachal Pradesh. Working remotely.</span>
+    <span>Hand-written HTML and CSS. No frameworks, no tracking.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var RUNS = {
+    rag: {
+      q: "What was the year-over-year change in total assets in fiscal 2026?",
+      src: "Advanced Multimodal RAG, 175-page annual report",
+      steps: [
+        ["slots","metric: total assets; years: FY2025, FY2026",""],
+        ["cache_lookup","no prior answer for this question","miss"],
+        ["scope · analyze","needs two figures and a calculation: full route","route: full"],
+        ["retrieve","dense and BM25 fused; table rows ranked with text","p.141 table"],
+        ["rerank","skipped: the reranker lowered recall in tests","skipped"],
+        ["compress","only the rows that carry the two figures are kept",""],
+        ["calculate","computed in code, not by the model","+85.3%"],
+        ["generate","the answer is written around the computed figure","cites p.141"],
+        ["verify","every number checked against the calculator and the cited page","match"],
+        ["cache_write","stored, so a repeat comes back in milliseconds",""]
+      ],
+      result: "<b>Total assets rose 85.3% year over year in fiscal 2026, to $95,202 million.</b> Page 141.<span class='meta'>cold 2,178 ms, exact repeat 3 ms, paraphrase 35 ms (similarity 0.98). gpt-oss-120b on Groq</span>",
+      foot: "10 steps, golden question G7"
+    },
+    customs: {
+      q: "Container MSCU7002002, gearboxes, HS 87084000. Clear it for filing.",
+      src: "Port & Customs Clearance Copilot, JNPT demo data",
+      steps: [
+        ["verify_documents","packing list says 760 units, invoice says 800","flag"],
+        ["price_demurrage","running in parallel with the rulebook","₹15,912"],
+        ["rulebook_rag","six relevant rules found, all six cited","6/6"],
+        ["checklist","one blocker: the quantity mismatch","1 blocker"],
+        ["compliance_gate","cannot proceed with a mismatch on file","hold"],
+        ["filing_gate","blocked; asks a person for a corrected packing list","blocked"],
+        ["human","packing list re-issued, v1 to v2",""],
+        ["run 2","all agents re-run on the corrected papers","~6 s"],
+        ["filing_gate","interrupt(): waits for the reviewer","waiting"],
+        ["reviewer","approves the filing","3,070 ms"],
+        ["file_clearance","cleared","done"]
+      ],
+      result: "<b>Cleared on the second run, after a person fixed the packing list.</b> The agent found the mismatch; the human made the call.<span class='meta'>run 1 41.2 s, run 2 40.5 s (about 30 s is MCP start-up; agents about 7 s). gpt-oss on Groq</span>",
+      foot: "11 steps, two human gates"
+    },
+    fleet: {
+      q: "Delhi to Guwahati, 300 L tank, 4 km/L, two axles. Where should the truck refuel?",
+      src: "Fleet Profitability Agent, typed mode, no LLM",
+      steps: [
+        ["parse_input","tank, mileage and axle class read from the request",""],
+        ["resolve","origin and destination geocoded",""],
+        ["route","truck routing with alternatives","2 routes"],
+        ["get_prices","district diesel prices along each route",""],
+        ["get_tolls","toll plazas priced; unpriced plazas never guessed",""],
+        ["plan_trip","refuel stops chosen; 40 L reserve kept","2 plans"],
+        ["render","plan written out; no figure comes from a model",""]
+      ],
+      result: "<b>Route 2 saves ₹1,489.76, or ₹2.96 per litre.</b> Route 1 saves ₹326.74. Both plans hold the 40 L reserve floor.<span class='meta'>7 tool calls, 258 s end to end, prices as of 11 Aug 2026</span>",
+      foot: "7 tool calls, deterministic"
+    }
+  };
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var q = document.getElementById("run-q"),
+      ol = document.getElementById("run-steps"),
+      res = document.getElementById("run-result"),
+      footL = document.getElementById("run-foot-l"),
+      timer = null, current = "rag";
+
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+
+  function render(key){
+    var r = RUNS[key];
+    clearTimeout(timer);
+    q.innerHTML = "<small>"+esc(r.src)+"</small>"+esc(r.q);
+    footL.textContent = r.foot;
+    ol.innerHTML = r.steps.map(function(s){
+      return "<li class='run-step'><span class='dot'></span><span><span class='n'>"+esc(s[0])+"</span><span class='d'>"+esc(s[1])+"</span></span><span class='t'>"+esc(s[2])+"</span></li>";
+    }).join("");
+    res.innerHTML = r.result;
+    res.classList.remove("on");
+    var items = ol.querySelectorAll(".run-step");
+    if (reduce) { items.forEach(function(li){li.classList.add("on","done");}); res.classList.add("on"); return; }
+    var i = 0;
+    function tick(){
+      if (i > 0) items[i-1].classList.add("done");
+      if (i < items.length) { items[i].classList.add("on"); i++; timer = setTimeout(tick, 650); }
+      else { res.classList.add("on"); }
+    }
+    timer = setTimeout(tick, 400);
+  }
+
+  document.querySelectorAll(".run-tab").forEach(function(b){
+    b.addEventListener("click", function(){
+      document.querySelectorAll(".run-tab").forEach(function(x){x.setAttribute("aria-selected","false");});
+      b.setAttribute("aria-selected","true");
+      current = b.dataset.run; render(current);
+    });
+  });
+  document.getElementById("replay").addEventListener("click", function(){ render(current); });
+
+  // start when the hero is visible (it is on load; this also handles bfcache)
+  render("rag");
+
+  // scroll reveal
+  var els = document.querySelectorAll(".rv");
+  if (reduce || !("IntersectionObserver" in window)) { els.forEach(function(e){e.classList.add("in");}); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target);} });
+  }, {threshold: 0.12, rootMargin: "0px 0px -6% 0px"});
+  els.forEach(function(e){ io.observe(e); });
+})();
+(function(){
+  var img = document.getElementById("lend-img"), cap = document.getElementById("lend-cap");
+  if (!img) return;
+  var tabs = document.querySelectorAll(".clip-tabs button");
+  tabs.forEach(function(b){
+    b.addEventListener("click", function(){
+      if (b.getAttribute("aria-selected") === "true") return;
+      tabs.forEach(function(x){ x.setAttribute("aria-selected","false"); });
+      b.setAttribute("aria-selected","true");
+      img.style.opacity = 0;
+      var next = new Image();
+      next.onload = function(){ img.src = b.dataset.src; img.alt = b.dataset.alt; cap.textContent = b.dataset.cap; img.style.opacity = 1; };
+      next.src = b.dataset.src;
+    });
+  });
+})();
+(function(){
+  var car = document.getElementById("car"); if (!car) return;
+  var view = car.querySelector(".car-view"), track = car.querySelector(".car-track"),
+      frames = Array.prototype.slice.call(track.children), n = frames.length, i = 0,
+      counter = document.getElementById("car-i"),
+      reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function show(k){
+    i = (k + n) % n;
+    track.style.transform = "translateX(" + (-i * 100) + "%)";
+    counter.textContent = i + 1;
+    frames.forEach(function(f, j){
+      f.setAttribute("aria-hidden", j === i ? "false" : "true");
+      var v = f.querySelector("video");
+      if (v) { if (j === i && !reduce) { var p = v.play(); if (p && p.catch) p.catch(function(){}); } else { v.pause(); } }
+    });
+  }
+  document.getElementById("car-prev").addEventListener("click", function(){ show(i - 1); });
+  document.getElementById("car-next").addEventListener("click", function(){ show(i + 1); });
+  view.addEventListener("keydown", function(e){
+    if (e.key === "ArrowRight") { e.preventDefault(); show(i + 1); }
+    if (e.key === "ArrowLeft")  { e.preventDefault(); show(i - 1); }
+  });
+  var x0 = null;
+  view.addEventListener("pointerdown", function(e){ x0 = e.clientX; });
+  view.addEventListener("pointerup", function(e){
+    if (x0 === null) return; var dx = e.clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) show(dx < 0 ? i + 1 : i - 1);
+  });
+  view.addEventListener("pointercancel", function(){ x0 = null; });
+  show(0);
+})();
+</script>
+</body>
+</html>
